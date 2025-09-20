@@ -31,8 +31,8 @@ A comprehensive microservices-based dashboard application for real-time face det
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
-   cd face-detection-dashboard
+   git clone https://github.com/sahil1605/Skylark-Labs-Project.git
+   cd Skylark-Labs-Project
    ```
 
 2. **Start all services**
