@@ -133,3 +133,6 @@ worker/models/
 # Test coverage
 coverage/
 *.lcov
+
+# Private documentation
+PRIVATE_PROJECT_NOTES.md
