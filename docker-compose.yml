@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: face_detection
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: "postgresql://postgres:password@postgres:5432/face_detection?schema=public"
+      JWT_SECRET: "your-super-secret-jwt-key-change-in-production"
+      PORT: 8000
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    command: npm run dev
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      VITE_API_URL: "http://localhost:8000"
+      VITE_WS_URL: "ws://localhost:8000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm run dev
+
+  # Go Worker
+  worker:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      BACKEND_URL: "http://backend:8000"
+      PORT: 8080
+    depends_on:
+      - backend
+    volumes:
+      - ./worker:/app
+      - worker_models:/app/models
+    command: go run main.go
+
+  # MediaMTX for WebRTC streaming
+  mediamtx:
+    image: bluenviron/mediamtx:latest
+    ports:
+      - "8888:8888"  # HTTP API
+      - "8889:8889"  # RTSP
+      - "8890:8890"  # WebRTC
+      - "8891:8891"  # HLS
+    volumes:
+      - ./mediamtx.yml:/mediamtx.yml:ro
+    command: mediamtx /mediamtx.yml
+
+volumes:
+  postgres_data:
+  worker_models:

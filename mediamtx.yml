@@ -1,0 +1,91 @@
+# MediaMTX configuration for WebRTC streaming
+
+# General settings
+logLevel: info
+logDestinations: [stdout]
+logFile: mediamtx.log
+
+# API settings
+api: yes
+apiAddress: :8888
+
+# RTSP settings
+rtspAddress: :8889
+rtspEncryption: "no"
+rtspServerKey: server.key
+rtspServerCert: server.crt
+
+# WebRTC settings
+webrtc: yes
+webrtcAddress: :8890
+webrtcEncryption: "no"
+webrtcServerKey: server.key
+webrtcServerCert: server.crt
+
+# HLS settings
+hls: yes
+hlsAddress: :8891
+hlsEncryption: "no"
+hlsServerKey: server.key
+hlsServerCert: server.crt
+
+# Path settings
+paths:
+  all:
+    # Allow publishing from any source
+    publishUser: ""
+    publishPass: ""
+    
+    # Allow reading from any source
+    readUser: ""
+    readPass: ""
+    
+    # Source settings
+    source: publisher
+    sourceProtocol: automatic
+    sourceAnyPortEnable: yes
+    sourceFingerprint: ""
+    sourceOnDemand: no
+    sourceOnDemandStartTimeout: 10s
+    sourceOnDemandCloseAfter: 10s
+    sourceRedirect: ""
+    disablePublisherOverride: no
+    fallback: ""
+    
+    # Recording settings
+    record: no
+    recordPath: ./recordings/%path/%Y-%m-%d_%H-%M-%S
+    recordFormat: mp4
+    recordPartDuration: 1h
+    recordSegmentDuration: 1h
+    recordDeleteAfter: 24h
+    
+    # WebRTC settings
+    webrtc: yes
+    webrtcEncryption: "no"
+    webrtcServerKey: server.key
+    webrtcServerCert: server.crt
+    webrtcAllowOrigin: "*"
+    
+    # HLS settings
+    hls: yes
+    hlsEncryption: "no"
+    hlsServerKey: server.key
+    hlsServerCert: server.crt
+    hlsAllowOrigin: "*"
+    hlsVariant: lowLatency
+    hlsSegmentCount: 7
+    hlsSegmentDuration: 1s
+    hlsPartDuration: 200ms
+    hlsSegmentMaxSize: 50M
+    hlsDirectory: ""
+    
+    # RTSP settings
+    rtsp: yes
+    rtspEncryption: "no"
+    rtspServerKey: server.key
+    rtspServerCert: server.crt
+    rtspAddress: :8889
+    rtspEncryption: "no"
+    rtspServerKey: server.key
+    rtspServerCert: server.crt
