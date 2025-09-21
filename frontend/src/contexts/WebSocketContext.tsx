@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { useAuth } from './AuthContext';
+import config from '../config';
 
 interface WebSocketContextType {
   socket: WebSocket | null;
@@ -38,7 +39,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
     }
 
     // Connect to WebSocket
-    const ws = new WebSocket(`ws://localhost:8000/ws?token=${token}`);
+    const ws = new WebSocket(`${config.wsUrl}/ws?token=${token}`);
     
     ws.onopen = () => {
       console.log('WebSocket connected');

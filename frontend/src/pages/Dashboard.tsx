@@ -32,6 +32,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useWebSocket } from '../contexts/WebSocketContext';
 import CameraTile from '../components/CameraTile';
 import CameraForm from '../components/CameraForm';
+import config from '../config';
 
 interface Camera {
   id: string;
@@ -80,7 +81,7 @@ const Dashboard: React.FC = () => {
 
   const fetchCameras = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/cameras', {
+      const response = await fetch(`${config.apiUrl}/api/cameras`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -101,7 +102,7 @@ const Dashboard: React.FC = () => {
 
   const fetchAlerts = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/alerts?limit=20', {
+      const response = await fetch(`${config.apiUrl}/api/alerts?limit=20`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -120,7 +121,7 @@ const Dashboard: React.FC = () => {
 
   const handleCreateCamera = async (cameraData: Partial<Camera>) => {
     try {
-      const response = await fetch('http://localhost:8000/api/cameras', {
+      const response = await fetch(`${config.apiUrl}/api/cameras`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -144,7 +145,7 @@ const Dashboard: React.FC = () => {
 
   const handleUpdateCamera = async (id: string, cameraData: Partial<Camera>) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/cameras/${id}`, {
+      const response = await fetch(`${config.apiUrl}/api/cameras/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -169,7 +170,7 @@ const Dashboard: React.FC = () => {
 
   const handleDeleteCamera = async (id: string) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/cameras/${id}`, {
+      const response = await fetch(`${config.apiUrl}/api/cameras/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -188,7 +189,7 @@ const Dashboard: React.FC = () => {
 
   const handleStartCamera = async (id: string) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/cameras/${id}/start`, {
+      const response = await fetch(`${config.apiUrl}/api/cameras/${id}/start`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -208,7 +209,7 @@ const Dashboard: React.FC = () => {
 
   const handleStopCamera = async (id: string) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/cameras/${id}/stop`, {
+      const response = await fetch(`${config.apiUrl}/api/cameras/${id}/stop`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
